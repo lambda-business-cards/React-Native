@@ -2,5 +2,6 @@ import { createBottomTabNavigator, createSwitchNavigator } from 'react-navigatio
 
 import LoadingView from '../../views/LoadingView';
 import Auth from '../Authenticate';
+import App from '../App';
 
-export default createSwitchNavigator({ Loading: LoadingView, Auth });
+export default createSwitchNavigator({ Loading: LoadingView, Auth, App });

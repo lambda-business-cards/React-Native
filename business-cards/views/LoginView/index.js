@@ -1,21 +1,37 @@
 import React from 'react';
-import { View, TextInput, Text } from 'react-native';
+import { View, TextInput, Text, AsyncStorage } from 'react-native';
 
 import styles from './styles.js';
 import LoginForm from '../../components/LoginForm';
 
-export default () => {
+export default class LoginView extends React.Component {
 
-  return (
+  static navigationOptions = {
+    title: 'Log In'
+  }
 
-    <View style={styles.container}>
+  handleLoginSuccess = data => {
 
-      <Text style={styles.text}>Log In</Text>
+    AsyncStorage.setItem('token', data.token)
+      .then(() => this.props.navigation.navigate('App'))
 
-      <LoginForm />
+  }
 
-    </View>
+  render() {
 
-  )
+    return (
+
+      <View style={styles.container}>
+
+        <Text style={styles.text}>Log In</Text>
+
+        <LoginForm handleLoginSuccess={this.handleLoginSuccess} />
+
+      </View>
+
+    )
+
+  }
+
 
 }

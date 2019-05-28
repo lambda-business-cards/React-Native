@@ -7,9 +7,10 @@ export default StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
     borderColor: 'black',
+    padding: 5,
     width: '100%',
-    height: 20,
-    marginBottom: 5
+    marginBottom: 5,
+    fontSize: 20
 
   },
 
@@ -24,6 +25,14 @@ export default StyleSheet.create({
   text: {
 
     textAlign: 'center'
+
+  },
+
+  badLogin: {
+
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 16
 
   }
 

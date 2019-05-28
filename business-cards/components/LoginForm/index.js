@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, TextInput, Text, Button, Alert } from 'react-native';
-import axios from 'axios';
 
 import styles from './styles.js';
 
@@ -9,23 +8,41 @@ export default class Login extends React.Component {
   state = {
 
     username: '',
-    password: ''
+    password: '',
+    badLogin: false
 
   }
 
   handleChange = (text, field) => {
 
     this.setState({
-      [field]: text
+      [field]: text,
+      badLogin: false
     });
 
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
 
-    axios.post(`${process.env.REACT_APP_SERVER_URL}/api/users/login`, this.state)
-      .then(res => Alert.alert("good login homie"))
-      .catch(err => Alert.alert("bad login"));
+    console.log((this.state));
+
+    fetch(`${process.env.SERVER_URL}/api/users/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.json())
+      .then(data => this.props.handleLoginSuccess(data))
+      .catch(err => {
+        this.setState({
+          badLogin: true,
+          password: ''
+        });
+        console.log(err);
+      });
 
   }
 
@@ -35,11 +52,14 @@ export default class Login extends React.Component {
 
       <View style={styles.container}>
 
+        {this.state.badLogin && <Text style={styles.badLogin}>Invalid Credentials!</Text>}
+
         <TextInput
           style={styles.textInput}
           placeholder='username'
           onChangeText={text => this.handleChange(text, 'username')}
           value={this.state.username}
+          autoCapitalize='none'
         />
 
         <TextInput
@@ -47,6 +67,7 @@ export default class Login extends React.Component {
           placeholder='password'
           onChangeText={text => this.handleChange(text, 'password')}
           value={this.state.password}
+          autoCapitalize='none'
           secureTextEntry
         />
 

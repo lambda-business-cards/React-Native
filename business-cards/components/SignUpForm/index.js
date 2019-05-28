@@ -1,15 +1,23 @@
 import React from 'react';
-import { View, TextInput, Text, Button, Alert } from 'react-native';
-import axios from 'axios';
+import { View, TextInput, Text, Button, Alert, AsyncStorage } from 'react-native';
+import Config from 'react-native-config';
 
 import styles from './styles.js';
 
 export default class SignUp extends React.Component {
 
-  state = {
+  constructor() {
 
-    username: '',
-    password: ''
+    super();
+
+    this.state = {
+
+      username: '',
+      password: '',
+      email: '',
+      phone: ''
+
+    }
 
   }
 
@@ -21,11 +29,32 @@ export default class SignUp extends React.Component {
 
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
 
-    axios.post(`${process.env.REACT_APP_SERVER_URL}/api/users/login`, this.state)
-      .then(res => Alert.alert("good login homie"))
-      .catch(err => Alert.alert("bad login"));
+    console.log('signing up...');
+
+    fetch(`${process.env.SERVER_URL}/api/users/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.json())
+      .then(data => {
+
+        console.log('yeet');
+        console.log(data);
+
+        if (data.token) {
+
+          this.props.handleSignupSuccess(data);
+
+        }
+
+      })
+      .catch(err => console.log(err));
 
   }
 
@@ -40,6 +69,24 @@ export default class SignUp extends React.Component {
           placeholder='username'
           onChangeText={text => this.handleChange(text, 'username')}
           value={this.state.username}
+          autoCapitalize='none'
+        />
+
+        <TextInput
+          style={styles.textInput}
+          placeholder='email'
+          onChangeText={text => this.handleChange(text, 'email')}
+          value={this.state.email}
+          autoCapitalize='none'
+        />
+
+        <TextInput
+          style={styles.textInput}
+          keyboardType='phone-pad'
+          placeholder='phone'
+          onChangeText={text => this.handleChange(text, 'phone')}
+          value={this.state.phone}
+          autoCapitalize='none'
         />
 
         <TextInput
@@ -48,6 +95,7 @@ export default class SignUp extends React.Component {
           onChangeText={text => this.handleChange(text, 'password')}
           value={this.state.password}
           secureTextEntry
+          autoCapitalize='none'
         />
 
         <Button
