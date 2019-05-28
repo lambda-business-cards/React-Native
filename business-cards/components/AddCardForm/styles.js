@@ -39,6 +39,22 @@ export default StyleSheet.create({
 
     textAlign: 'center'
 
+  },
+
+  successTxt: {
+
+    textAlign: 'center',
+    marginBottom: 15,
+    color: 'lightgreen'
+
+  },
+
+  failTxt: {
+
+    textAlign: 'center',
+    marginBottom: 15,
+    color: 'red'
+
   }
 
 });

@@ -4,7 +4,6 @@ export const LOGOUT = 'LOGOUT';
 
 export const login = credentials => dispatch => {
 
-  console.log('yee');
   return fetch(`${process.env.SERVER_URL}/api/users/login`, {
     method: 'POST',
     headers: {
@@ -25,3 +24,8 @@ export const login = credentials => dispatch => {
     });
 
 }
+
+export const loginToken = token => ({
+  type: LOGIN,
+  payload: token
+});

@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 
 import styles from './styles';
 
+const statuses = {
+
+  FAILED: 'FAILED',
+  SUCCESS: 'SUCCESS'
+
+}
+
 class AddCardForm extends React.Component {
 
   state = {
@@ -14,7 +21,33 @@ class AddCardForm extends React.Component {
     phone: '',
     address: '',
     fax: '',
-    web_url: ''
+    web_url: '',
+    submitStatus: null
+
+  }
+
+  handleSubmit = () => {
+
+    fetch(`${process.env.SERVER_URL}/api/cards`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: this.props.token
+      },
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.status === 201 ? this.setState({
+        submitStatus: statuses.SUCCESS,
+        business_name: '',
+        contact_name: '',
+        email: '',
+        phone: '',
+        address: '',
+        fax: '',
+        web_url: ''
+      }) : this.setState({ submitStatus: statuses.FAILED }))
+      .catch(() => this.setState({ submitStatus: statuses.FAILED }));
 
   }
 
@@ -29,7 +62,7 @@ class AddCardForm extends React.Component {
 
   render() {
 
-    const { business_name, contact_name, email, phone, address, fax, web_url } = this.state;
+    const { business_name, contact_name, email, phone, address, fax, web_url, submitStatus } = this.state;
 
     return (
 
@@ -37,7 +70,7 @@ class AddCardForm extends React.Component {
 
         <View style={styles.field}>
 
-          <Text style={styles.label}>Business Name:</Text>
+          <Text style={styles.label}>Business Name <Text style={{color: 'red'}}>*</Text>:</Text>
 
           <TextInput
             value={business_name}
@@ -49,7 +82,7 @@ class AddCardForm extends React.Component {
 
         <View style={styles.field}>
 
-          <Text style={styles.label}>Contact Name:</Text>
+          <Text style={styles.label}>Contact Name <Text style={{color: 'red'}}>*</Text>:</Text>
 
           <TextInput
             value={contact_name}
@@ -61,7 +94,7 @@ class AddCardForm extends React.Component {
 
         <View style={styles.field}>
 
-          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.label}>Email <Text style={{color: 'red'}}>*</Text>:</Text>
 
           <TextInput
             value={email}
@@ -122,13 +155,17 @@ class AddCardForm extends React.Component {
         <View style={styles.field}>
 
         <Button
-          onPress={() => console.log('added')}
+          onPress={this.handleSubmit}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Add Card!</Text>
         </Button>
 
         </View>
+
+        { submitStatus === statuses.FAILED && <Text style={styles.failTxt}>There was a problem adding this business card.</Text> }
+
+        { submitStatus === statuses.SUCCESS && <Text style={styles.successTxt}>Success!</Text> }
 
       </View>
 

@@ -1,12 +1,30 @@
 import React from 'react';
 import { View, Text, AsyncStorage } from 'react-native';
+import { connect } from 'react-redux';
 
-export default class AuthCheck extends React.Component {
+import { loginToken } from '../../redux/actions';
+
+class AuthCheck extends React.Component {
 
   componentDidMount() {
 
     AsyncStorage.getItem('token')
-      .then(token => this.props.navigation.navigate(token ? 'App' : 'Auth'));
+      .then(token => {
+
+        if (token) {
+
+          this.props.loginToken(token);
+          this.props.navigation.navigate('App');
+
+        }
+
+        else {
+
+          this.props.navigation.navigate('Auth');
+
+        }
+
+      });
 
   }
 
@@ -25,3 +43,5 @@ export default class AuthCheck extends React.Component {
   }
 
 }
+
+export default connect(null, { loginToken })(AuthCheck);
