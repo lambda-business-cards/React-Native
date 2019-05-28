@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, TextInput, Text, Button, Alert } from 'react-native';
+import { connect } from 'react-redux';
 
+import { login } from '../../redux/actions';
 import styles from './styles.js';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
 
   state = {
 
@@ -24,25 +26,8 @@ export default class Login extends React.Component {
 
   handleSubmit = () => {
 
-    console.log((this.state));
-
-    fetch(`${process.env.SERVER_URL}/api/users/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(res => res.json())
-      .then(data => this.props.handleLoginSuccess(data))
-      .catch(err => {
-        this.setState({
-          badLogin: true,
-          password: ''
-        });
-        console.log(err);
-      });
+    this.props.login(this.state)
+      .then(() => this.props.handleLoginSuccess());
 
   }
 
@@ -83,3 +68,7 @@ export default class Login extends React.Component {
   }
 
 }
+
+const LoginForm = connect(null, { login })(Login);
+
+export default LoginForm;

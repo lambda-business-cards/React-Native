@@ -6,14 +6,9 @@ import LoginForm from '../../components/LoginForm';
 
 export default class LoginView extends React.Component {
 
-  static navigationOptions = {
-    title: 'Log In'
-  }
+  handleLoginSuccess = () => {
 
-  handleLoginSuccess = data => {
-
-    AsyncStorage.setItem('token', data.token)
-      .then(() => this.props.navigation.navigate('App'))
+    this.props.navigation.navigate('App');
 
   }
 
@@ -32,6 +27,5 @@ export default class LoginView extends React.Component {
     )
 
   }
-
 
 }
