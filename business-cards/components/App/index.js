@@ -5,6 +5,7 @@ import { Text } from 'react-native';
 import HomeView from '../../views/HomeView';
 import MyCardsView from '../../views/MyCardsView';
 import AddCardView from '../../views/AddCardView';
+import CardView from '../../views/CardView';
 
 const DrawerStack = createDrawerNavigator({
   Home: HomeView,
@@ -13,7 +14,8 @@ const DrawerStack = createDrawerNavigator({
 });
 
 const navigator = createStackNavigator({
-  DrawerStack
+  DrawerStack,
+  CardView
 }, {
   headerMode: 'float',
   navigationOptions: () => { title: 'test' }
