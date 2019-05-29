@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_FAIL, LOGOUT } from '../actions';
+import { LOGIN, LOGIN_FAIL, LOGOUT, SIGNUP, SIGNUP_FAIL } from '../actions';
 import { AsyncStorage } from 'react-native';
 
 const initialState = {
@@ -15,11 +15,23 @@ export default (state = initialState, action) => {
     case LOGIN:
 
       AsyncStorage.setItem('token', action.payload);
-      return { ...state, token: action.payload, failedLogin: false };
+      const newData = action.payload;
+      return { ...state, token: JSON.parse(JSON.stringify(action.payload)), failedLogin: false };
 
     case LOGIN_FAIL:
 
-      return { ...state, failedLogin: true };
+
+      console.log(action.payload);
+      return { ...state, failedLogin: action.payload };
+
+    case SIGNUP:
+
+      AsyncStorage.setItem('token', action.payload);
+      return { ...state, token: action.payload, failedLogin: false };
+
+    case SIGNUP_FAIL:
+
+      return { ...state, failedLogin: action.payload };
 
     case LOGOUT:
 

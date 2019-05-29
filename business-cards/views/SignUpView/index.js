@@ -8,8 +8,7 @@ export default class SignUpView extends React.Component {
 
   handleSignupSuccess = data => {
 
-    AsyncStorage.setItem('token', data.token)
-      .then(() => this.props.navigation.navigate('App'))
+      this.props.navigation.navigate('App')
 
   }
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity as Button } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import CardPreview from '../CardPreview';
 
@@ -54,6 +55,12 @@ class CardsList extends React.Component {
 
         {this.state.cards && this.state.cards.length === 0 && <Text>Looks like there aren't any cards yet!</Text>}
 
+        {this.state.cards && this.state.cards.length === 0 && this.props.source === 'mine' &&
+          <Button onPress={() => this.props.navigation.navigate('Add Cards')}>
+            <Text>Create a card!</Text>
+          </Button>
+        }
+
         {this.state.cards && this.state.cards.map(card => <CardPreview key={card.id} card={card} source={this.props.source} />)}
 
       </View>
@@ -70,4 +77,4 @@ const stateToProps = state => ({
 
 });
 
-export default connect(stateToProps, null)(CardsList);
+export default connect(stateToProps, null)(withNavigation(CardsList));

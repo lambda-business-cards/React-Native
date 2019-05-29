@@ -29,7 +29,6 @@ export default class ScanCardView extends React.Component {
 
     if (!Number.isNaN(data)) {
 
-      console.log('not bad');
       this.props.navigation.navigate('CardView', { card_id: data, foreign: true });
 
     }

@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, TextInput, Text, Button, Alert, AsyncStorage } from 'react-native';
 import Config from 'react-native-config';
+import { connect } from 'react-redux';
 
+import { signup } from '../../redux/actions';
 import styles from './styles.js';
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
 
   constructor() {
 
@@ -33,28 +35,7 @@ export default class SignUp extends React.Component {
 
     console.log('signing up...');
 
-    fetch(`${process.env.SERVER_URL}/api/users/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(res => res.json())
-      .then(data => {
-
-        console.log('yeet');
-        console.log(data);
-
-        if (data.token) {
-
-          this.props.handleSignupSuccess(data);
-
-        }
-
-      })
-      .catch(err => console.log(err));
+    this.props.signup(this.state);
 
   }
 
@@ -110,3 +91,10 @@ export default class SignUp extends React.Component {
   }
 
 }
+
+const stateToProps = state => ({
+  token: state.token,
+  failedLogin: state.failedLogin
+});
+
+export default connect(null, { signup })(SignUp);

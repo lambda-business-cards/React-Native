@@ -27,17 +27,30 @@ class Login extends React.Component {
   handleSubmit = () => {
 
     this.props.login(this.state)
-      .then(() => this.props.handleLoginSuccess());
+      .then(success => success ? this.props.handleLoginSuccess() : this.setState({ badLogin: 'invalid credentials!' }))
+      .catch(err => this.setState({ badLogin: 'invalid credentials!' }));
+
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if (this.props.token) {
+
+      this.props.handleLoginSuccess();
+
+    }
 
   }
 
   render() {
 
+    console.log('render');
+
     return (
 
       <View style={styles.container}>
 
-        {this.state.badLogin && <Text style={styles.badLogin}>Invalid Credentials!</Text>}
+        {this.props.failedLogin && <Text style={styles.badLogin}>{this.props.failedLogin}</Text>}
 
         <TextInput
           style={styles.textInput}
@@ -69,6 +82,16 @@ class Login extends React.Component {
 
 }
 
-const LoginForm = connect(null, { login })(Login);
+const stateToProps = state => {
 
-export default LoginForm;
+  console.log(state);
+
+  return {
+
+    token: state.token
+
+  }
+
+};
+
+export default connect(state => ({ token: state.token, token2: state}), { login })(Login);

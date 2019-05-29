@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, AsyncStorage, Button } from 'react-native';
+import { connect } from 'react-redux';
 
-export default class HomeView extends React.Component {
+import { logout } from '../../redux/actions';
+
+class HomeView extends React.Component {
 
   render() {
 
@@ -12,7 +15,10 @@ export default class HomeView extends React.Component {
         <Text>Home Page</Text>
 
         <Button
-          onPress={() => AsyncStorage.removeItem('token').then(() => this.props.navigation.navigate('Auth'))}
+          onPress={() => {
+            this.props.logout();
+            this.props.navigation.navigate('Auth')
+          }}
           title='Log Out'
         />
 
@@ -23,3 +29,5 @@ export default class HomeView extends React.Component {
   }
 
 }
+
+export default connect(null, { logout })(HomeView);
