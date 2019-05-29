@@ -3,12 +3,22 @@ import { View, Text } from 'react-native';
 
 import Card from '../../components/Card';
 
-export default ({ navigation }) => (
+export default class CardView extends React.Component {
 
-  <View>
+  render() {
 
-    <Card card={navigation.getParam('card')} />
+    const { navigation } = this.props;
 
-  </View>
+    return (
 
-)
+      <View>
+
+        <Card card={navigation.getParam('card')} />
+
+      </View>
+
+    );
+
+  }
+
+}

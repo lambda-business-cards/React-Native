@@ -14,6 +14,12 @@ class CardsList extends React.Component {
 
   componentDidMount() {
 
+    this.getData();
+
+  }
+
+  getData = () => {
+
     if (this.props.mode === 'mine') {
 
       fetch(`${process.env.SERVER_URL}/api/cards`, {
@@ -25,6 +31,18 @@ class CardsList extends React.Component {
         .then(res => res.json())
         .then(data => this.setState({ cards: data }))
         .catch(err => console.log(err));
+
+    }
+
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if (this.props.shouldFetch && !prevProps.shouldFetch) {
+
+      console.log('triggering another fetch');
+      this.getData();
+      this.props.acknowledge();
 
     }
 
