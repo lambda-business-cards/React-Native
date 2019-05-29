@@ -20,19 +20,15 @@ class CardsList extends React.Component {
 
   getData = () => {
 
-    if (this.props.mode === 'mine') {
-
-      fetch(`${process.env.SERVER_URL}/api/cards`, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: this.props.token
-        }
-      })
-        .then(res => res.json())
-        .then(data => this.setState({ cards: data }))
-        .catch(err => console.log(err));
-
-    }
+    fetch(this.props.mode === 'mine' ? `${process.env.SERVER_URL}/api/cards` : `${process.env.SERVER_URL}/api/cards/saved`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: this.props.token
+      }
+    })
+      .then(res => res.json())
+      .then(data => this.setState({ cards: data }))
+      .catch(err => console.log(err));
 
   }
 
@@ -56,7 +52,9 @@ class CardsList extends React.Component {
 
         {!this.state.cards && <Text>Loading cards...</Text>}
 
-        {this.state.cards && this.state.cards.map(card => <CardPreview key={card.id} card={card} />)}
+        {this.state.cards && this.state.cards.length === 0 && <Text>Looks like there aren't any cards yet!</Text>}
+
+        {this.state.cards && this.state.cards.map(card => <CardPreview key={card.id} card={card} source={this.props.source} />)}
 
       </View>
 

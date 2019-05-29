@@ -38,7 +38,7 @@ export default class MyCardsView extends React.Component {
 
         <Text>My Cards Page</Text>
 
-        <CardsList mode='mine' shouldFetch={this.state.shouldFetch} acknowledge={this.acknowledge} />
+        <CardsList mode='mine' shouldFetch={this.state.shouldFetch} acknowledge={this.acknowledge} source='mine' />
 
       </View>
 

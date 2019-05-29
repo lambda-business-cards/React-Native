@@ -13,7 +13,12 @@ export default class CardView extends React.Component {
 
       <View>
 
-        <Card card={navigation.getParam('card')} />
+        <Card
+          card={navigation.getParam('card')}
+          card_id={navigation.getParam('card_id')}
+          foreign={navigation.getParam('foreign')}
+          source={navigation.getParam('source')}
+        />
 
       </View>
 

@@ -4,10 +4,10 @@ import { withNavigation } from 'react-navigation';
 
 import styles from './styles';
 
-export default withNavigation(({ card, navigation }) => (
+export default withNavigation(({ card, navigation, source }) => (
 
   <TouchableOpacity
-    onPress={() => navigation.navigate('CardView', { card })}>
+    onPress={() => navigation.navigate('CardView', { card, source })}>
 
     <View style={styles.container}>
 
