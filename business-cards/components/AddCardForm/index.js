@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, TextInput, View, TouchableOpacity as Button } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import styles from './styles';
 import globalStyles from '../../globalStyles';
@@ -27,28 +28,78 @@ class AddCardForm extends React.Component {
 
   }
 
+  componentDidMount() {
+
+    if (this.props.mode === 'update') {
+
+      const { card } = this.props;
+
+      this.setState({
+        business_name: card.business_name,
+        contact_name: card.contact_name,
+        email: card.email,
+        phone: card.phone,
+        address: card.address,
+        fax: card.fax,
+        web_url: card.web_url
+      });
+
+    }
+
+  }
+
   handleSubmit = () => {
 
-    fetch(`${process.env.SERVER_URL}/api/cards`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: this.props.token
-      },
-      body: JSON.stringify(this.state)
-    })
-      .then(res => res.status === 201 ? this.setState({
-        submitStatus: statuses.SUCCESS,
-        business_name: '',
-        contact_name: '',
-        email: '',
-        phone: '',
-        address: '',
-        fax: '',
-        web_url: ''
-      }) : this.setState({ submitStatus: statuses.FAILED }))
-      .catch(() => this.setState({ submitStatus: statuses.FAILED }));
+    if (this.props.mode !== 'update') {
+
+      fetch(`${process.env.SERVER_URL}/api/cards`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: this.props.token
+        },
+        body: JSON.stringify(this.state)
+      })
+        .then(res => res.status === 201 ? this.setState({
+          submitStatus: statuses.SUCCESS,
+          business_name: '',
+          contact_name: '',
+          email: '',
+          phone: '',
+          address: '',
+          fax: '',
+          web_url: ''
+        }) : this.setState({ submitStatus: statuses.FAILED }))
+        .catch(() => this.setState({ submitStatus: statuses.FAILED }));
+
+    }
+
+    else {
+
+      fetch(`${process.env.SERVER_URL}/api/cards/${this.props.card.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: this.props.token
+        },
+        body: JSON.stringify(this.state)
+      })
+        .then(res => res.status === 200 ? this.setState({
+          submitStatus: statuses.SUCCESS,
+          business_name: '',
+          contact_name: '',
+          email: '',
+          phone: '',
+          address: '',
+          fax: '',
+          web_url: ''
+        }) : this.setState({ submitStatus: statuses.FAILED }))
+        .then(() => this.props.navigation.goBack())
+        .catch(() => this.setState({ submitStatus: statuses.FAILED }));
+
+    }
 
   }
 
@@ -159,7 +210,7 @@ class AddCardForm extends React.Component {
           onPress={this.handleSubmit}
           style={globalStyles.button}
         >
-          <Text style={globalStyles.buttonText}>Add Card!</Text>
+          <Text style={globalStyles.buttonText}>{this.props.mode === 'update' ? 'Update Card' : 'Add Card'}</Text>
         </Button>
 
         </View>
@@ -180,4 +231,4 @@ const stateToProps = state => ({
   token: state.token
 });
 
-export default connect(stateToProps, null)(AddCardForm);
+export default connect(stateToProps, null)(withNavigation(AddCardForm));

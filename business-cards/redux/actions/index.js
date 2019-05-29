@@ -6,6 +6,8 @@ export const LOGOUT = 'LOGOUT';
 
 export const login = credentials => dispatch => {
 
+  console.log(`${process.env.SERVER_URL}/api/users/login`);
+
   return fetch(`${process.env.SERVER_URL}/api/users/login`, {
     method: 'POST',
     headers: {
@@ -14,7 +16,7 @@ export const login = credentials => dispatch => {
     },
     body: JSON.stringify(credentials)
   })
-    .then(res => res.status === 200 ? res.json() : null)
+    .then(res => res.status === 200 ? res.json() : console.log(res.status))
     .then(data => {
 
       if (data) {
@@ -53,7 +55,7 @@ export const signup = credentials => dispatch => {
     .then(res => {
 
       console.log('sign up', res.status);
-      return res.status === 200 ? res.json() : null
+      return res.status === 201 ? res.json() : null
 
     })
     .then(data => {

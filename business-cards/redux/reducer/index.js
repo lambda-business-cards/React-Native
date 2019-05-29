@@ -20,7 +20,6 @@ export default (state = initialState, action) => {
 
     case LOGIN_FAIL:
 
-
       console.log(action.payload);
       return { ...state, failedLogin: action.payload };
 

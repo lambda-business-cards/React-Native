@@ -136,6 +136,15 @@ class Card extends React.Component {
           </>) :
           <Text>Loading card...</Text>}
 
+          {!this.props.foreign && this.props.source === 'mine' &&
+            <Button
+              onPress={() => this.props.navigation.navigate('UpdateCardView', { card })}
+              style={globalStyles.button}
+            >
+              <Text style={globalStyles.buttonText}>Update Card</Text>
+            </Button>
+          }
+
       </View>
 
     )

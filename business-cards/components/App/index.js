@@ -7,6 +7,7 @@ import MyCardsView from '../../views/MyCardsView';
 import MySavedCardsView from '../../views/MySavedCardsView';
 import AddCardView from '../../views/AddCardView';
 import CardView from '../../views/CardView';
+import UpdateCardView from '../../views/UpdateCardView';
 import ScanCardView from '../../views/ScanCardView';
 
 import OpenButton from '../OpenButton';
@@ -27,7 +28,8 @@ const DrawerStack = createDrawerNavigator({
 
 const navigator = createStackNavigator({
   DrawerStack,
-  CardView
+  CardView,
+  UpdateCardView
 }, {
   headerMode: 'float',
   navigationOptions: () => { title: 'test' }

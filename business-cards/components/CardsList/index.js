@@ -28,7 +28,10 @@ class CardsList extends React.Component {
         Authorization: this.props.token
       }
     })
-      .then(res => res.json())
+      .then(res => {
+        console.log(res.status);
+        return res.json();
+      })
       .then(data => this.setState({ cards: data }))
       .catch(err => console.log(err));
 
