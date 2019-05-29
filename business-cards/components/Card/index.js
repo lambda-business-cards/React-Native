@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import styles from './styles';
+import globalStyles from '../../globalStyles';
+
+console.log(globalStyles);
 
 class Card extends React.Component {
 
@@ -117,15 +120,17 @@ class Card extends React.Component {
             {!this.props.foreign &&
               <Button
                 onPress={() => this.deleteCard(card.id)}
+                style={globalStyles.button}
               >
-                <Text>Delete Card</Text>
+                <Text style={globalStyles.buttonText}>Delete Card</Text>
               </Button>}
 
             {this.props.foreign &&
               <Button
                 onPress={() => this.saveCard(card.id)}
+                style={globalStyles.button}
               >
-                <Text>Save Card</Text>
+                <Text style={globalStyles.buttonText}>Save Card</Text>
               </Button>}
 
           </>) :

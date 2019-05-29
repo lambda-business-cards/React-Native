@@ -3,6 +3,7 @@ import { View, Text, AsyncStorage, Button } from 'react-native';
 import { connect } from 'react-redux';
 
 import { logout } from '../../redux/actions';
+import globalStyles from '../../globalStyles';
 
 class HomeView extends React.Component {
 
@@ -12,7 +13,7 @@ class HomeView extends React.Component {
 
       <View>
 
-        <Text>Home Page</Text>
+        <Text style={globalStyles.title}>Home Page</Text>
 
         <Button
           onPress={() => {

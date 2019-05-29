@@ -7,11 +7,12 @@ import styles from './styles';
 export default withNavigation(({ card, navigation, source }) => (
 
   <TouchableOpacity
-    onPress={() => navigation.navigate('CardView', { card, source })}>
+    onPress={() => navigation.navigate('CardView', { card, source })}
+    style={{width: '100%', alignItems: 'center'}}>
 
     <View style={styles.container}>
 
-      <Text>{card.business_name}</Text>
+      <Text style={{textAlign: 'center'}}>{card.business_name}</Text>
 
     </View>
 

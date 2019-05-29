@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, AsyncStorage, Button } from 'react-native';
 
 import CardsList from '../../components/CardsList';
+import globalStyles from '../../globalStyles';
 
 export default class MySavedCardsView extends React.Component {
 
@@ -36,7 +37,7 @@ export default class MySavedCardsView extends React.Component {
 
       <View>
 
-        <Text>My Saved Cards</Text>
+        <Text style={globalStyles.title}>My Saved Cards</Text>
 
         <CardsList mode='saved' shouldFetch={this.state.shouldFetch} acknowledge={this.acknowledge} source='saved' />
 

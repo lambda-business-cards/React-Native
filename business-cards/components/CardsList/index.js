@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import CardPreview from '../CardPreview';
+import globalStyles from '../../globalStyles';
 
 class CardsList extends React.Component {
 
@@ -49,15 +50,15 @@ class CardsList extends React.Component {
 
     return (
 
-      <View>
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
 
         {!this.state.cards && <Text>Loading cards...</Text>}
 
         {this.state.cards && this.state.cards.length === 0 && <Text>Looks like there aren't any cards yet!</Text>}
 
         {this.state.cards && this.state.cards.length === 0 && this.props.source === 'mine' &&
-          <Button onPress={() => this.props.navigation.navigate('Add Cards')}>
-            <Text>Create a card!</Text>
+          <Button onPress={() => this.props.navigation.navigate('Add Cards')} style={globalStyles.button}>
+            <Text style={globalStyles.buttonText}>Create a card!</Text>
           </Button>
         }
 

@@ -3,6 +3,7 @@ import { Text, TextInput, View, TouchableOpacity as Button } from 'react-native'
 import { connect } from 'react-redux';
 
 import styles from './styles';
+import globalStyles from '../../globalStyles';
 
 const statuses = {
 
@@ -156,9 +157,9 @@ class AddCardForm extends React.Component {
 
         <Button
           onPress={this.handleSubmit}
-          style={styles.button}
+          style={globalStyles.button}
         >
-          <Text style={styles.buttonText}>Add Card!</Text>
+          <Text style={globalStyles.buttonText}>Add Card!</Text>
         </Button>
 
         </View>

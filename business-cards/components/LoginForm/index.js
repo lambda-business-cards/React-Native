@@ -26,9 +26,19 @@ class Login extends React.Component {
 
   handleSubmit = () => {
 
-    this.props.login(this.state)
-      .then(success => success ? this.props.handleLoginSuccess() : this.setState({ badLogin: 'invalid credentials!' }))
-      .catch(err => this.setState({ badLogin: 'invalid credentials!' }));
+    if (this.state.username !== '' && this.state.password !== '') {
+
+      this.props.login(this.state)
+        .then(success => success ? this.props.handleLoginSuccess() : this.setState({ badLogin: 'invalid credentials!' }))
+        .catch(err => this.setState({ badLogin: 'invalid credentials!' }));
+
+    }
+
+    else {
+
+      this.setState({ badLogin: 'username and password are required!'});
+
+    }
 
   }
 
@@ -50,7 +60,7 @@ class Login extends React.Component {
 
       <View style={styles.container}>
 
-        {this.props.failedLogin && <Text style={styles.badLogin}>{this.props.failedLogin}</Text>}
+        {this.state.badLogin && <Text style={styles.badLogin}>{this.state.badLogin}</Text>}
 
         <TextInput
           style={styles.textInput}

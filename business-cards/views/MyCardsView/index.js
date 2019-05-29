@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, AsyncStorage, Button } from 'react-native';
 
 import CardsList from '../../components/CardsList';
+import globalStyles from '../../globalStyles';
 
 export default class MyCardsView extends React.Component {
 
@@ -36,7 +37,7 @@ export default class MyCardsView extends React.Component {
 
       <View>
 
-        <Text>My Cards Page</Text>
+        <Text style={globalStyles.title}>My Cards Page</Text>
 
         <CardsList mode='mine' shouldFetch={this.state.shouldFetch} acknowledge={this.acknowledge} source='mine' />
 

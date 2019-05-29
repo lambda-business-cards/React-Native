@@ -25,22 +25,6 @@ export default StyleSheet.create({
 
   },
 
-  button: {
-
-    marginTop: 15,
-    marginBottom: 15,
-    width: '70%',
-    padding: 15,
-    backgroundColor: '#ddd'
-
-  },
-
-  buttonText: {
-
-    textAlign: 'center'
-
-  },
-
   successTxt: {
 
     textAlign: 'center',

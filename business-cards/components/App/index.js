@@ -9,12 +9,20 @@ import AddCardView from '../../views/AddCardView';
 import CardView from '../../views/CardView';
 import ScanCardView from '../../views/ScanCardView';
 
+import OpenButton from '../OpenButton';
+
 const DrawerStack = createDrawerNavigator({
   Home: HomeView,
   'My Cards': MyCardsView,
   'Saved Cards': MySavedCardsView,
   'Add Cards': AddCardView,
   'Scan New Card': ScanCardView
+}, {
+
+  navigationOptions: ({ navigation }) => ({
+    headerLeft: <OpenButton navigation={navigation} />
+  })
+
 });
 
 const navigator = createStackNavigator({
