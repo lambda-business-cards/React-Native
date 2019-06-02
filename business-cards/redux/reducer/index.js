@@ -1,10 +1,12 @@
-import { LOGIN, LOGIN_FAIL, LOGOUT, SIGNUP, SIGNUP_FAIL } from '../actions';
+import { LOGIN, LOGIN_FAIL, LOGOUT, SIGNUP, SIGNUP_FAIL, FETCH_MINE, FETCH_SAVED } from '../actions';
 import { AsyncStorage } from 'react-native';
 
 const initialState = {
 
   token: null,
-  failedLogin: false
+  failedLogin: false,
+  myCards: null,
+  savedCards: null
 
 }
 
@@ -14,18 +16,15 @@ export default (state = initialState, action) => {
 
     case LOGIN:
 
-      AsyncStorage.setItem('token', action.payload);
       const newData = action.payload;
       return { ...state, token: JSON.parse(JSON.stringify(action.payload)), failedLogin: false };
 
     case LOGIN_FAIL:
 
-      console.log(action.payload);
       return { ...state, failedLogin: action.payload };
 
     case SIGNUP:
 
-      AsyncStorage.setItem('token', action.payload);
       return { ...state, token: action.payload, failedLogin: false };
 
     case SIGNUP_FAIL:
@@ -35,6 +34,15 @@ export default (state = initialState, action) => {
     case LOGOUT:
 
       return { ...state, token: null, failedLogin: false };
+
+    case FETCH_MINE:
+
+      console.log('gotten');
+      return { ...state, myCards: action.payload }
+
+    case FETCH_SAVED:
+
+      return { ...state, savedCards: action.payload }
 
     default:
       return state;

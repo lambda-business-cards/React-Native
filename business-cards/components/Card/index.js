@@ -5,6 +5,7 @@ import { withNavigation } from 'react-navigation';
 
 import styles from './styles';
 import globalStyles from '../../globalStyles';
+import { fetchMyData, fetchSavedData } from '../../redux/actions';
 
 console.log(globalStyles);
 
@@ -31,7 +32,7 @@ class Card extends React.Component {
     })
       .then(res => {
 
-        console.log('we back', res.status)
+        this.props.source === 'mine' ? this.props.fetchMyData(this.props.token) : this.props.fetchSavedData(this.props.token);
 
         if (res.status === 200)
           this.props.navigation.goBack();
@@ -66,21 +67,25 @@ class Card extends React.Component {
 
   componentDidMount() {
 
-    if (!this.props.card && this.props.card_id) {
+    if (!this.props.foreign) {
 
-      this.setState({ fromId: true });
+      this.setState({
+        fromId: true,
+        card: this.props.card
+      });
 
-      fetch(`${process.env.SERVER_URL}/api/cards/${this.props.card_id}`, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: this.props.token
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          this.setState({ card: data })
-        })
-        .catch(err => console.log(err));
+    }
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (prevProps.myCards !== this.props.myCards) {
+
+      this.setState({
+        fromId: true,
+        card: this.props.source === 'mine' ? this.props.myCards.find(card => card.id === prevState.card.id) : this.props.savedCards.find(card => card.id === this.props.card_id)
+      });
 
     }
 
@@ -88,19 +93,7 @@ class Card extends React.Component {
 
   render() {
 
-    let card;
-
-    if (this.state.fromId) {
-
-      card = this.state.card;
-
-    }
-
-    else {
-
-      card = this.props.card;
-
-    }
+    const { card } = this.state;
 
     return (
 
@@ -154,7 +147,9 @@ class Card extends React.Component {
 }
 
 const stateToProps = state => ({
-  token: state.token
+  token: state.token,
+  myCards: state.myCards,
+  savedCards: state.savedCards
 });
 
-export default connect(stateToProps, null)(withNavigation(Card));
+export default connect(stateToProps, { fetchMyData, fetchSavedData })(withNavigation(Card));

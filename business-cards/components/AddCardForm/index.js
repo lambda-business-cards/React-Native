@@ -5,6 +5,7 @@ import { withNavigation } from 'react-navigation';
 
 import styles from './styles';
 import globalStyles from '../../globalStyles';
+import { fetchMyData } from '../../redux/actions';
 
 const statuses = {
 
@@ -71,6 +72,7 @@ class AddCardForm extends React.Component {
           fax: '',
           web_url: ''
         }) : this.setState({ submitStatus: statuses.FAILED }))
+        .then(() => this.props.fetchMyData())
         .catch(() => this.setState({ submitStatus: statuses.FAILED }));
 
     }
@@ -96,7 +98,12 @@ class AddCardForm extends React.Component {
           fax: '',
           web_url: ''
         }) : this.setState({ submitStatus: statuses.FAILED }))
-        .then(() => this.props.navigation.goBack())
+        .then(() => {
+
+          this.props.fetchMyData(this.props.token)
+            .then(() => this.props.navigation.goBack());
+
+        })
         .catch(() => this.setState({ submitStatus: statuses.FAILED }));
 
     }
@@ -231,4 +238,4 @@ const stateToProps = state => ({
   token: state.token
 });
 
-export default connect(stateToProps, null)(withNavigation(AddCardForm));
+export default connect(stateToProps, { fetchMyData })(withNavigation(AddCardForm));

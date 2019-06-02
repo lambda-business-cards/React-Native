@@ -5,67 +5,39 @@ import { withNavigation } from 'react-navigation';
 
 import CardPreview from '../CardPreview';
 import globalStyles from '../../globalStyles';
+import { selectMyCards, selectSavedCards } from '../../redux/selectors';
+import { fetchMyData, fetchSavedData } from '../../redux/actions';
 
 class CardsList extends React.Component {
 
-  state = {
-
-    cards: null
-
-  }
-
   componentDidMount() {
 
-    this.getData();
-
-  }
-
-  getData = () => {
-
-    fetch(this.props.mode === 'mine' ? `${process.env.SERVER_URL}/api/cards` : `${process.env.SERVER_URL}/api/cards/saved`, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: this.props.token
-      }
-    })
-      .then(res => {
-        console.log(res.status);
-        return res.json();
-      })
-      .then(data => this.setState({ cards: data }))
-      .catch(err => console.log(err));
-
-  }
-
-  componentDidUpdate(prevProps) {
-
-    if (this.props.shouldFetch && !prevProps.shouldFetch) {
-
-      console.log('triggering another fetch');
-      this.getData();
-      this.props.acknowledge();
-
-    }
+    this.props.source === 'mine' ? this.props.fetchMyData(this.props.token) : this.props.fetchSavedData(this.props.token);
 
   }
 
   render() {
 
+    const cards = this.props.source === 'mine' ? this.props.myCards : this.props.savedCards;
+
+    console.log('cards', cards);
+    console.log('mine', this.props.myCards);
+
     return (
 
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
 
-        {!this.state.cards && <Text>Loading cards...</Text>}
+        {!cards && <Text>Loading cards...</Text>}
 
-        {this.state.cards && this.state.cards.length === 0 && <Text>Looks like there aren't any cards yet!</Text>}
+        {cards && cards.length === 0 && <Text>Looks like there aren't any cards yet!</Text>}
 
-        {this.state.cards && this.state.cards.length === 0 && this.props.source === 'mine' &&
+        {cards && cards.length === 0 && this.props.source === 'mine' &&
           <Button onPress={() => this.props.navigation.navigate('Add Cards')} style={globalStyles.button}>
             <Text style={globalStyles.buttonText}>Create a card!</Text>
           </Button>
         }
 
-        {this.state.cards && this.state.cards.map(card => <CardPreview key={card.id} card={card} source={this.props.source} />)}
+        {cards && cards.map(card => <CardPreview key={card.id} card={card} source={this.props.source} />)}
 
       </View>
 
@@ -77,8 +49,10 @@ class CardsList extends React.Component {
 
 const stateToProps = state => ({
 
-  token: state.token
+  token: state.token,
+  myCards: selectMyCards(state),
+  savedCards: selectSavedCards(state),
 
 });
 
-export default connect(stateToProps, null)(withNavigation(CardsList));
+export default connect(stateToProps, { fetchMyData, fetchSavedData })(withNavigation(CardsList));
